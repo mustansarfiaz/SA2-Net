@@ -9,7 +9,7 @@ SA2-Net: Scale-aware Attention Network for Medical Image Segmentation
 
 
 ## Contact
-Should you have any questions, please create an issue on this repository or contact us at mustansar.fiaz@mbzuai.ac.ae
+If you have any questions, please create an issue on this repository or contact us at mustansar.fiaz@mbzuai.ac.ae
 
 <hr />
 
