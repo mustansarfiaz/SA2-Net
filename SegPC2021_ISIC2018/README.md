@@ -46,8 +46,7 @@ Please go to ["./datasets/README.md"](https://github.com/NITR098/Awesome-U-Net/b
 
 
 ## Train and Test
-
-In the `train_and_test` folder, there are folders with the names of different datasets. In each of these subfolders, there are files related to each model network in two different formats (`.py` and ‍`.ipynb`). In notebook files you will face with the following procedures. This file contains both the testing and traning steps.
+This repo contains both the testing and traning steps.
 
 - Prepration step
   - Import packages & functions
@@ -65,9 +64,12 @@ In the `train_and_test` folder, there are folders with the names of different da
   - Plot graphs and print results
 - Save images
 
+## Weights and Visualization
+Please download zip files and extract inside the save_models
+ [SegPC2021_model](https://drive.google.com/file/d/1R-TAjL0ImM8kihbqk-riwogTWMcpN6QX/view?usp=sharing) 
+ [ISIC2018_model]()
+
 ## Citations
-
-
 If this code is helpful for your study, please cite:
 ```
 @inproceedings{fiaz2022sat,
