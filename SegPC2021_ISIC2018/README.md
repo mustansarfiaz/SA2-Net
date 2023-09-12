@@ -41,7 +41,7 @@ Here is
 
 ## Dataset prepration
 
-Please go to ["./datasets/README.md"](https://github.com/NITR098/Awesome-U-Net/blob/main/datasets/README.md) for details. We used 3 datasets for this work. After preparing required data you need to put the required data path in relevant config files.
+Please go to ["./datasets/README.md"](https://github.com/mustansarfiaz/SA2-Net/blob/main/SegPC2021_ISIC2018/datasets/README.md) for details. We used 3 datasets for this work. After preparing required data you need to put the required data path in relevant config files.
 
 
 
