@@ -90,13 +90,13 @@ if __name__ == '__main__':
             test_num = 80
             model_type = config.model_name
             #model_path = "./GlaS/"+model_type+"/"+test_session+"/models/best_model-"+model_type+".pth.tar"
-            model_path = "./GLaS/"+model_type+"/"+test_session+"/models/fold_"+str(i+1)+"/best_model-"+model_type+".pth.tar"
+            model_path = "./GLaS/"+model_type+"/"+test_session+"/models/fold_"+str(i+1)+"/val_best_model-"+model_type+".pth.tar"
     
         elif config.task_name is "MoNuSeg":
             test_num = 14
             model_type = config.model_name
             #model_path = "./MoNuSeg/"+model_type+"/"+test_session+"/models/best_model-"+model_type+".pth.tar"
-            model_path = "./MoNuSeg/"+model_type+"/"+test_session+"/models/fold_"+str(i+1)+"/best_model-"+model_type+".pth.tar"
+            model_path = "./MoNuSeg/"+model_type+"/"+test_session+"/models/fold_"+str(i+1)+"/val_best_model-"+model_type+".pth.tar"
     
     
         save_path  = config.task_name +'/'+ model_type +'/' + test_session + '/'
