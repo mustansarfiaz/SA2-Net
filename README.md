@@ -1,4 +1,4 @@
-# SA2-Net: SA2-Net: Scale-aware Attention Network for Microscopic Image Segmentation (BMVC'23 -- Oral)
+# SA2-Net: Scale-aware Attention Network for Microscopic Image Segmentation (BMVC'23 -- Oral)
 
 
 ## Contact
