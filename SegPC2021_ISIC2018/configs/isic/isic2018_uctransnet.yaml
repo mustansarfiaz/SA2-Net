@@ -1,0 +1,50 @@
+run:
+  mode: 'train'
+  device: 'gpu'
+transforms: none
+dataset:
+  class_name: "ISIC2018Dataset"
+  input_size: 224
+  training:
+    params:
+      data_dir: "/nvme-data/Medical/Segmentation_UNet/datasets/ISIC2018/np"
+  validation:
+    params:
+      data_dir: "/nvme-data/Medical/Segmentation_UNet/datasets/ISIC2018/np"
+  number_classes: 2
+data_loader:
+  train: 
+    batch_size: 16
+    shuffle: true
+    num_workers: 0
+    pin_memory: true
+  validation: 
+    batch_size: 16
+    shuffle: false
+    num_workers: 0
+    pin_memory: true
+  test:
+    batch_size: 16
+    shuffle: false
+    num_workers: 0
+    pin_memory: false
+training:
+  optimizer:
+    name: 'Adam'
+    params:
+      lr: 0.0001
+  criterion:
+    name: "DiceLoss"
+    params: {}
+  scheduler:
+    factor: 0.5
+    patience: 10
+  epochs: 100
+model:
+  save_dir: './saved_models/isic2018/isic2018_uctransnet'
+  load_weights: false
+  name: "UCTransNet"
+  params: 
+    n_channels: 3
+    n_classes: 2
+# preprocess:
