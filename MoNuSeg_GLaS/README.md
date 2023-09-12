@@ -1,4 +1,4 @@
-# [BMVC2023] SA2Net
+# [BMVC2023-Oral] SA2Net
 
 
 This repo is the official implementation of
