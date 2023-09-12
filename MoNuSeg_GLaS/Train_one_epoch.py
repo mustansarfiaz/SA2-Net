@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2021/6/19 2:14 下午
-# @Author  : Haonan Wang
+# @Time    : 2022/12/19 8:59 
+# @Author  : Mustansar Fiaz
 # @File    : Train_one_epoch.py
-# @Software: PyCharm
+
 import torch.optim
 import os
 import time
