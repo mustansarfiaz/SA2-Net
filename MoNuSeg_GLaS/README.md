@@ -64,7 +64,7 @@ You can get the Dice and IoU scores and the visualization results.
 
 
 * [TransUNet](https://github.com/Beckschen/TransUNet) 
-* [UCTransNet]([https://github.com/jeya-maria-jose/Medical-Transformer](https://github.com/McGregorWwww/UCTransNet))
+* [UCTransNet](https://github.com/McGregorWwww/UCTransNet)
 
 
 
