@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2021/7/8 8:59 上午
-# @Author  : Haonan Wang
+# @Time    : 2022/12/19 8:59 
+# @Author  : Mustansar Fiaz
 # @File    : train.py
-# @Software: PyCharm
+
 import torch.optim
 from tensorboardX import SummaryWriter
 import os
