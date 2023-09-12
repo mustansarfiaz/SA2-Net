@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # UCTransNet - SegPC2021
+# # GA2Net - SegPC2021
 # ---
 
 # ## Import packages & functions
