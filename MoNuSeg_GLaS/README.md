@@ -1,4 +1,4 @@
-# [AAAI2022] UCTransNet
+# [BMVC2023] SA2Net
 
 
 This repo is the official implementation of
