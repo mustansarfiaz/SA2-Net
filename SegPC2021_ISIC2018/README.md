@@ -65,10 +65,12 @@ This repo contains both the testing and traning steps.
 - Save images
 
 ## Weights and Visualization
-Please download zip files and extract inside the save_models
+Please download zip files and extract them inside the directory
+```
+./saved_models/
  [SegPC2021_model](https://drive.google.com/file/d/1R-TAjL0ImM8kihbqk-riwogTWMcpN6QX/view?usp=sharing) 
  [ISIC2018_model](https://drive.google.com/file/d/1cO61Ef3uhNrNi11HaQZ0BM5THyTnBiBP/view?usp=sharing)
-
+```
 ## Citations
 If this code is helpful for your study, please cite:
 ```
