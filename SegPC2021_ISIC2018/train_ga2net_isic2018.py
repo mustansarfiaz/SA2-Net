@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # UCTransNet - ISIC2018
+# # GA2Net - ISIC2018
 # ---
 
 # ## Import packages & functions
