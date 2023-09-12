@@ -1,4 +1,4 @@
-# SA2-Net
+# [BMVC2023] SA2-Net [Oral]
 SA2-Net: Scale-aware Attention Network for Medical Image Segmentation
 
 
