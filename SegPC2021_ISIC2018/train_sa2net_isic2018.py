@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # GA2Net - ISIC2018
+# # SA2Net - ISIC2018
 # ---
 
 # ## Import packages & functions
@@ -67,7 +67,7 @@ random.seed(0)
 # In[3]:
 
 
-CONFIG_NAME = "isic/isic2018_ga2net.yaml"
+CONFIG_NAME = "isic/isic2018_sa2net.yaml"
 CONFIG_FILE_PATH = os.path.join("./configs", CONFIG_NAME)
 
 
@@ -400,7 +400,7 @@ def test(model, te_dataloader):
 
 
 
-from models.ga2net.gaganet import MyNet as Net
+from models.sa2net.sasanet import MyNet as Net
 import models._uctransnet.Config as uct_config
 config_vit = uct_config.get_CTranS_config()
 
