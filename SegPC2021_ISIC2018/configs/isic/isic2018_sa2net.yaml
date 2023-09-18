@@ -41,7 +41,7 @@ training:
     patience: 10
   epochs: 150
 model:
-  save_dir: './saved_models/isic2018_ga2net'
+  save_dir: './saved_models/isic2018_sa2net'
   load_weights: false
   name: "MyNet"
   params: 
