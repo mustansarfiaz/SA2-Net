@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2021/7/8 8:59 上午
-# @File    : UCTransNet.py
-# @Software: PyCharm
+# @Time    : 2022/12/19 8:59 
+# @Author  : Mustansar Fiaz
+# @File    : gaganet.py
 import torch.nn as nn
 import torch
 import torch.nn.functional as F
@@ -51,32 +51,6 @@ class DownBlock(nn.Module):
 class Flatten(nn.Module):
     def forward(self, x):
         return x.view(x.size(0), -1)
-
-class CCA(nn.Module):
-    """
-    CCA Block
-    """
-    def __init__(self, F_g, F_x):
-        super().__init__()
-        self.mlp_x = nn.Sequential(
-            Flatten(),
-            nn.Linear(F_x, F_x))
-        self.mlp_g = nn.Sequential(
-            Flatten(),
-            nn.Linear(F_g, F_x))
-        self.relu = nn.ReLU(inplace=True)
-
-    def forward(self, g, x):
-        # channel-wise attention
-        avg_pool_x = F.avg_pool2d( x, (x.size(2), x.size(3)), stride=(x.size(2), x.size(3)))
-        channel_att_x = self.mlp_x(avg_pool_x)
-        avg_pool_g = F.avg_pool2d( g, (g.size(2), g.size(3)), stride=(g.size(2), g.size(3)))
-        channel_att_g = self.mlp_g(avg_pool_g)
-        channel_att_sum = (channel_att_x + channel_att_g)/2.0
-        scale = torch.sigmoid(channel_att_sum).unsqueeze(2).unsqueeze(3).expand_as(x)
-        x_after_channel = x * scale
-        out = self.relu(x_after_channel)
-        return out
 
 ################# Dynamic kernel for each stage ##################
 class AG_new(nn.Module):
@@ -132,8 +106,7 @@ class AG_new(nn.Module):
 class UpBlock_attention(nn.Module):
     def __init__(self, F_g, F_l,  out_channels, nb_Conv, activation='ReLU'):
         super().__init__()
-        self.up = nn.Upsample(scale_factor=2)
-        #self.coatt = CCA(F_g=in_channels//2, F_x=in_channels//2)
+        self.up = nn.Upsample(scale_factor=2)        
         self.AG = AG_new(F_g=F_g, F_l=F_l)
         self.nConvs = _make_nConv(F_l, out_channels, nb_Conv, activation)
 
@@ -234,30 +207,7 @@ class Mixed_Scal_FeedForward(nn.Module):
 
         return x
 
-class ConvMod(nn.Module):
-    def __init__(self, dim):
-        super().__init__()
-
-        self.norm = LayerNorm(dim, eps=1e-6, data_format="channels_first")
-        self.a = nn.Sequential(
-                nn.Conv2d(dim, dim, 1),
-                nn.GELU(),
-                nn.Conv2d(dim, dim, 11, padding=5, groups=dim)
-        )
-
-        self.v = nn.Conv2d(dim, dim, 1)
-        self.proj = nn.Conv2d(dim, dim, 1)
-
-    def forward(self, x):
-        B, C, H, W = x.shape
-        
-        x = self.norm(x)   
-        a = self.a(x)
-        x = a * self.v(x)
-        x = self.proj(x)
-
-        return x
-    
+   
 class BottleNeck_Block(nn.Module):
     def __init__(self, channels,dims, multi_head=True, ffn=False):
         super(BottleNeck_Block, self).__init__()
@@ -395,19 +345,12 @@ class MyNet(nn.Module):
         
     def forward(self, x):
         in_x = x
-        x = x.float()
-        # Multi-scale input
-        #scale_img_2 = self.scale_img(x)
-        #scale_img_3 = self.scale_img(scale_img_2)
-        #scale_img_4 = self.scale_img(scale_img_3)  
+        x = x.float()       
         
         x1 = self.inc(x)
         x2 = self.down1(x1)
-        #x2 = self.Multi_scale_Fuse1(x2, scale_img_2)
         x3 = self.down2(x2)
-        #x3 = self.Multi_scale_Fuse2(x3, scale_img_3)
         x4 = self.down3(x3)
-        #x4 = self.Multi_scale_Fuse3(x4, scale_img_4)
         x5 = self.down4(x4)
         x2, x3, x4, x5 = self.side_conv2(x2), self.side_conv3(x3), self.side_conv4(x4), self.side_conv5(x5)
         x1,x2,x3,x4 = self.bottleneck(x1,x2,x3,x4)
