@@ -202,68 +202,7 @@ class ASC(nn.Module):
         return out
 
 
-class MHRSA(nn.Module):
-    """ Multi-Head Recurrent Spectral Attention
-    """
 
-    def __init__(self, channels, multi_head=True, ffn=False):
-        super().__init__()
-        self.channels = channels
-        self.multi_head = multi_head
-        self.ffn = ffn
-
-        if ffn:
-            self.ffn1 = MLP(channels)
-            self.ffn2 = MLP(channels)
-
-    def _conv_step(self, inputs):
-        if self.ffn:
-            Z = self.ffn1(inputs).tanh()
-            F = self.ffn2(inputs).sigmoid()
-        else:
-            #Z, F = inputs.split(split_size=self.channels, dim=1)
-            Z, F = inputs.tanh(), inputs.sigmoid()
-        return Z, F
-
-    def _rnn_step(self, z, f, h):
-        h_ = (1 - f) * z if h is None else f * h + (1 - f) * z
-        return h_
-
-    def forward(self, inputs, reverse=True):
-        Z, F = self._conv_step(inputs)
-
-        if self.multi_head:
-            Z1, Z2 = Z.split(self.channels // 2, 1)
-            Z2 = torch.flip(Z2, [2])
-            Z = torch.cat([Z1, Z2], dim=1)
-
-            F1, F2 = F.split(self.channels // 2, 1)
-            F2 = torch.flip(F2, [2])
-            F = torch.cat([F1, F2], dim=1)
-
-        h = None
-        h_time = []
-
-        if not reverse:
-            for _, (z, f) in enumerate(zip(Z.split(1, 2), F.split(1, 2))):
-                h = self._rnn_step(z, f, h)
-                h_time.append(h)
-        else:
-            for _, (z, f) in enumerate((zip(
-                reversed(Z.split(1, 2)), reversed(F.split(1, 2))
-            ))):  # split along timestep
-                h = self._rnn_step(z, f, h)
-                h_time.insert(0, h)
-
-        y = torch.cat(h_time, dim=2)
-
-        if self.multi_head:
-            y1, y2 = y.split(self.channels // 2, 1)
-            y2 = torch.flip(y2, [2])
-            y = torch.cat([y1, y2], dim=1)
-
-        return y
-    
 class LayerNorm(nn.Module):
     r""" From ConvNeXt (https://arxiv.org/pdf/2201.03545.pdf)
     """
@@ -311,82 +250,7 @@ class MLP(nn.Module):
 
         return x+in_x
     
-class MAB(nn.Module):
-    def __init__(self, conv_layer, channels, multi_head=True, ffn=False):
-        super().__init__()
-        self.conv = conv_layer
-        self.inter_sa = MHRSA(channels, multi_head=multi_head, ffn=ffn)
-        self.intra_sa = PSCA(channels, channels * 2)
 
-    def forward(self, x, reverse=False):
-        x = self.conv(x)
-        x = self.inter_sa(x, reverse=reverse)
-        x = self.intra_sa(x)
-        return x
-
-class SE(nn.Module):
-    """
-    Squeeze and excitation block
-    """
-
-    def __init__(self,
-                 inp,
-                 oup,
-                 expansion=0.25):
-        """
-        Args:
-            inp: input features dimension.
-            oup: output features dimension.
-            expansion: expansion ratio.
-        """
-
-        super().__init__()
-        self.avg_pool = nn.AdaptiveAvgPool2d(1)
-        self.fc = nn.Sequential(
-            nn.Linear(oup, int(inp * expansion), bias=False),
-            nn.GELU(),
-            nn.Linear(int(inp * expansion), oup, bias=False),
-            nn.Sigmoid()
-        )
-
-    def forward(self, x):
-        b, c, _, _ = x.size()
-        y = self.avg_pool(x).view(b, c)
-        y = self.fc(y).view(b, c, 1, 1)
-        return x * y
-
-
-class FeatExtract(nn.Module):
-    """
-    Feature extraction block based on: "Hatamizadeh et al.,
-    Global Context Vision Transformers <https://arxiv.org/abs/2206.09959>"
-    """
-
-    def __init__(self, dim, keep_dim=True):
-        """
-        Args:
-            dim: feature size dimension.
-            keep_dim: bool argument for maintaining the resolution.
-        """
-
-        super().__init__()
-        self.conv = nn.Sequential(
-            nn.Conv2d(dim, dim, 3, 1, 1,
-                      groups=dim, bias=False),
-            nn.GELU(),
-            SE(dim, dim),
-            nn.Conv2d(dim, dim, 1, 1, 0, bias=False),
-        )
-        if not keep_dim:
-            self.pool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
-        self.keep_dim = keep_dim
-
-    def forward(self, x):
-        x = x.contiguous()
-        x = x + self.conv(x)
-        if not self.keep_dim:
-            x = self.pool(x)
-        return x
 
 ##  Mixed-Scale Feed-forward Network (MSFN)
 class Mixed_Scal_FeedForward(nn.Module):
@@ -430,30 +294,7 @@ class Mixed_Scal_FeedForward(nn.Module):
 
         return x
 
-class ConvMod(nn.Module):
-    def __init__(self, dim):
-        super().__init__()
-
-        self.norm = LayerNorm(dim, eps=1e-6, data_format="channels_first")
-        self.a = nn.Sequential(
-                nn.Conv2d(dim, dim, 1),
-                nn.GELU(),
-                nn.Conv2d(dim, dim, 11, padding=5, groups=dim)
-        )
-
-        self.v = nn.Conv2d(dim, dim, 1)
-        self.proj = nn.Conv2d(dim, dim, 1)
-
-    def forward(self, x):
-        B, C, H, W = x.shape
-        
-        x = self.norm(x)   
-        a = self.a(x)
-        x = a * self.v(x)
-        x = self.proj(x)
-
-        return x
-    
+   
 class BottleNeck_Block(nn.Module):
     def __init__(self, channels,dims, multi_head=True, ffn=False):
         super(BottleNeck_Block, self).__init__()
