@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2022/12/19 8:59 
 # @Author  : Mustansar Fiaz
-# @File    : gaganet.py
+# @File    : sasanet.py
 import torch.nn as nn
 import torch
 import torch.nn.functional as F
