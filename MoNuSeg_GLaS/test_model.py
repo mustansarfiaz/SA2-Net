@@ -9,7 +9,7 @@ from tqdm import tqdm
 import os
 #from nets.UCTransNet import UCTransNet
 #from nets.UCTransNet import UCTransNet
-from nets.My_net_v0_1_save import MyNet
+from nets.sasanet import MyNet
 from utils import *
 import cv2
 import numpy as np
