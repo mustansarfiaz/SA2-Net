@@ -7,7 +7,7 @@ import Config_GlaS as config
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import os
-from nets.gaganet import MyNet
+from nets.sasa import MyNet
 from utils import *
 import cv2
 import numpy as np
