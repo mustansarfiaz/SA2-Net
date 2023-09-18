@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2022/12/19 8:59 
 # @Author  : Mustansar Fiaz
-# @File    : gaganet.py
-
+# @File    : sasanet.py
 import torch.nn as nn
 import torch
 import torch.nn.functional as F
-from .CTrans import ChannelTransformer
 
     
 def get_activation(activation_type):
@@ -53,7 +51,6 @@ class DownBlock(nn.Module):
 class Flatten(nn.Module):
     def forward(self, x):
         return x.view(x.size(0), -1)
-
 
 ################# Dynamic kernel for each stage ##################
 class AG_new(nn.Module):
@@ -109,7 +106,7 @@ class AG_new(nn.Module):
 class UpBlock_attention(nn.Module):
     def __init__(self, F_g, F_l,  out_channels, nb_Conv, activation='ReLU'):
         super().__init__()
-        self.up = nn.Upsample(scale_factor=2)
+        self.up = nn.Upsample(scale_factor=2)        
         self.AG = AG_new(F_g=F_g, F_l=F_l)
         self.nConvs = _make_nConv(F_l, out_channels, nb_Conv, activation)
 
@@ -118,23 +115,6 @@ class UpBlock_attention(nn.Module):
         skip_x_att = self.AG(g=up, x=skip_x)
         #x = torch.cat([skip_x_att, up], dim=1)  # dim 1 is the channel dimension
         return self.nConvs(skip_x_att)
-
-# class MLP(nn.Module):
-#     """
-#     Multilayer Perceptron (MLP)
-#     """
-
-#     def __init__(self, channel, bias=True):
-#         super().__init__()
-#         self.w_1 = nn.Conv2d(channel, channel, bias=bias, kernel_size=1)
-#         self.w_2 = nn.Conv2d(channel, channel, bias=bias, kernel_size=1)
-
-#     def forward(self, x):
-#         return self.w_2(F.tanh(self.w_1(x)))
-
-
-# """ The proposed blocks
-# """
 
 
 class LayerNorm(nn.Module):
@@ -184,7 +164,6 @@ class MLP(nn.Module):
 
         return x+in_x
     
-
 
 ##  Mixed-Scale Feed-forward Network (MSFN)
 class Mixed_Scal_FeedForward(nn.Module):
@@ -366,19 +345,12 @@ class MyNet(nn.Module):
         
     def forward(self, x):
         in_x = x
-        x = x.float()
-        # Multi-scale input
-        #scale_img_2 = self.scale_img(x)
-        #scale_img_3 = self.scale_img(scale_img_2)
-        #scale_img_4 = self.scale_img(scale_img_3)  
+        x = x.float()       
         
         x1 = self.inc(x)
         x2 = self.down1(x1)
-        #x2 = self.Multi_scale_Fuse1(x2, scale_img_2)
         x3 = self.down2(x2)
-        #x3 = self.Multi_scale_Fuse2(x3, scale_img_3)
         x4 = self.down3(x3)
-        #x4 = self.Multi_scale_Fuse3(x4, scale_img_4)
         x5 = self.down4(x4)
         x2, x3, x4, x5 = self.side_conv2(x2), self.side_conv3(x3), self.side_conv4(x4), self.side_conv5(x5)
         x1,x2,x3,x4 = self.bottleneck(x1,x2,x3,x4)
@@ -405,8 +377,8 @@ class MyNet(nn.Module):
                 logits1 = self.last_activation(self.outc1(x_1))
             else:
                  logits4 = self.outc4(x)
-                 logits3 = self.outc4(x_3)
-                 logits2 = self.outc4(x_2)
+                 logits3 = self.outc3(x_3)
+                 logits2 = self.outc2(x_2)
                  logits1 = self.outc1(x_1)
             return logits4, logits3, logits2, logits1
         
@@ -414,7 +386,7 @@ class MyNet(nn.Module):
         if self.n_classes ==1:
             logits = self.last_activation(self.outc4(x))
         else:
-            logits = self.outc(x) # if nusing BCEWithLogitsLoss or class>1
+            logits = self.outc4(x) # if nusing BCEWithLogitsLoss or class>1
             
         return logits
         
