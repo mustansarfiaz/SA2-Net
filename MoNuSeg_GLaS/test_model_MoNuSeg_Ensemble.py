@@ -7,7 +7,7 @@ import Config as config
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import os
-from nets.gaganet import MyNet
+from nets.sasanet import MyNet
 from utils import *
 import cv2
 import numpy as np
