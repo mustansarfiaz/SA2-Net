@@ -1,40 +1,13 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2021/7/8 8:59 上午
-# @File    : UCTransNet.py
-# @Software: PyCharm
+# @Time    : 2022/12/19 8:59 
+# @Author  : Mustansar Fiaz
+# @File    : gaganet.py
+
 import torch.nn as nn
 import torch
 import torch.nn.functional as F
 from .CTrans import ChannelTransformer
-from .gcn_lib import Grapher, act_layer
 
-class GNN_Transformer(nn.Module):
-    def __init__(
-        self,
-        dim=256,
-        blocks = 1, 
-        epsilon = 0.1,
-        kernels = [3],
-        reduction_ration = 1,
-        dilation_rate = [1]
-    ):        
-        super().__init__()
-        self.backbone = nn.ModuleList([])
-        for j in range(blocks):
-            self.backbone += [
-                nn.Sequential(Grapher(dim, kernel_size=kernels[j], dilation=dilation_rate[j], conv='edge', act='gelu', norm='batch',
-                                bias=True, stochastic=False, epsilon=epsilon , r=reduction_ration, n=196, drop_path=0.0,
-                                relative_pos=True),
-                     )]
-       
-
-    def forward(self, x):
-        residual = x
-        B, C, H, W = x.shape
-        for i in range(len(self.backbone)):
-            x = self.backbone[i](x)
-        embedding_final = x 
-        return embedding_final
     
 def get_activation(activation_type):
     activation_type = activation_type.lower()
