@@ -36,7 +36,7 @@ batch_size = 4
 
 
 # model_name = 'UCTransNet'
-model_name = 'MyNet_select_best_testset_'+ str(seed)
+model_name = 'MyNet_'+ str(seed)
 train_dataset = '/nvme-data/Medical/UCTransNet-/Datasets/datasets/'+ task_name+ '/Train_Folder/'
 val_dataset = '/nvme-data/Medical/UCTransNet-/Datasets/datasets/'+ task_name+ '/Val_Folder/'
 test_dataset = '/nvme-data/Medical/UCTransNet-/Datasets/datasets/'+ task_name+ '/Test_Folder/'
