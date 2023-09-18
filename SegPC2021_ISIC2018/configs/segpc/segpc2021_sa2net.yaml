@@ -38,7 +38,7 @@ training:
     patience: 10
   epochs: 100
 model:
-  save_dir: './saved_models/segpc2021_ga2net'
+  save_dir: './saved_models/segpc2021_sa2net'
   load_weights: false
   name: 'MyNet'
   params:
