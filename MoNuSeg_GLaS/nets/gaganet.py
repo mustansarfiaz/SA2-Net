@@ -54,31 +54,6 @@ class Flatten(nn.Module):
     def forward(self, x):
         return x.view(x.size(0), -1)
 
-class CCA(nn.Module):
-    """
-    CCA Block
-    """
-    def __init__(self, F_g, F_x):
-        super().__init__()
-        self.mlp_x = nn.Sequential(
-            Flatten(),
-            nn.Linear(F_x, F_x))
-        self.mlp_g = nn.Sequential(
-            Flatten(),
-            nn.Linear(F_g, F_x))
-        self.relu = nn.ReLU(inplace=True)
-
-    def forward(self, g, x):
-        # channel-wise attention
-        avg_pool_x = F.avg_pool2d( x, (x.size(2), x.size(3)), stride=(x.size(2), x.size(3)))
-        channel_att_x = self.mlp_x(avg_pool_x)
-        avg_pool_g = F.avg_pool2d( g, (g.size(2), g.size(3)), stride=(g.size(2), g.size(3)))
-        channel_att_g = self.mlp_g(avg_pool_g)
-        channel_att_sum = (channel_att_x + channel_att_g)/2.0
-        scale = torch.sigmoid(channel_att_sum).unsqueeze(2).unsqueeze(3).expand_as(x)
-        x_after_channel = x * scale
-        out = self.relu(x_after_channel)
-        return out
 
 ################# Dynamic kernel for each stage ##################
 class AG_new(nn.Module):
@@ -135,7 +110,6 @@ class UpBlock_attention(nn.Module):
     def __init__(self, F_g, F_l,  out_channels, nb_Conv, activation='ReLU'):
         super().__init__()
         self.up = nn.Upsample(scale_factor=2)
-        #self.coatt = CCA(F_g=in_channels//2, F_x=in_channels//2)
         self.AG = AG_new(F_g=F_g, F_l=F_l)
         self.nConvs = _make_nConv(F_l, out_channels, nb_Conv, activation)
 
@@ -161,46 +135,6 @@ class UpBlock_attention(nn.Module):
 
 # """ The proposed blocks
 # """
-
-
-class PSCA(nn.Module):
-    """ Progressive Spectral Channel Attention (PSCA) 
-    """
-
-    def __init__(self, d_model, d_ff):
-        super().__init__()
-        self.w_1 = nn.Conv2d(d_model, d_ff, 1, bias=False)
-        self.w_2 = nn.Conv2d(d_ff, d_model, 1, bias=False)
-        self.w_3 = nn.Conv2d(d_model, d_model, 1, bias=False)
-
-        nn.init.zeros_(self.w_3.weight)
-
-    def forward(self, x):
-        x = self.w_3(x) * x + x
-        x = self.w_1(x)
-        x = F.gelu(x)
-        x = self.w_2(x)
-        return x
-
-
-class ASC(nn.Module):
-    """ Attentive Skip Connection
-    """
-
-    def __init__(self, channel):
-        super().__init__()
-        self.weight = nn.Sequential(
-            nn.Conv2d(channel * 2, channel, 1),
-            nn.LeakyReLU(),
-            nn.Conv2d(channel, channel, 3, 1, 1),
-            nn.Sigmoid()
-        )
-
-    def forward(self, x, y):
-        w = self.weight(torch.cat([x, y], dim=1))
-        out = (1 - w) * x + w * y
-        return out
-
 
 
 class LayerNorm(nn.Module):
