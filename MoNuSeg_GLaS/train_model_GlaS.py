@@ -12,7 +12,7 @@ from torch.backends import cudnn
 from sklearn.model_selection import KFold
 from Load_Dataset_GlaS import RandomGenerator,ValGenerator,ImageToImage2D
 #from nets.UCTransNet import UCTransNet
-from nets.gaganet import MyNet
+from nets.sasanet import MyNet
 from torch.utils.data import DataLoader
 import logging
 from Train_one_epoch import train_one_epoch
