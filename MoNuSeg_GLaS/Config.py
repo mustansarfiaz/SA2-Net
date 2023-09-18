@@ -37,9 +37,9 @@ batch_size = 4
 
 # model_name = 'UCTransNet'
 model_name = 'MyNet_'+ str(seed)
-train_dataset = '/nvme-data/Medical/UCTransNet-/Datasets/datasets/'+ task_name+ '/Train_Folder/'
-val_dataset = '/nvme-data/Medical/UCTransNet-/Datasets/datasets/'+ task_name+ '/Val_Folder/'
-test_dataset = '/nvme-data/Medical/UCTransNet-/Datasets/datasets/'+ task_name+ '/Test_Folder/'
+train_dataset = '/nvme-data/Medical/Datasets/datasets/'+ task_name+ '/Train_Folder/'
+val_dataset = '/nvme-data/Medical/Datasets/datasets/'+ task_name+ '/Val_Folder/'
+test_dataset = '/nvme-data/Medical/Datasets/datasets/'+ task_name+ '/Test_Folder/'
 session_name       = 'Test_session' + '_' + model_name # + time.strftime('%m.%d_%Hh%M')
 save_path          = task_name +'/'+ model_name +'/' + session_name + '/'
 model_path         = save_path + 'models/'
