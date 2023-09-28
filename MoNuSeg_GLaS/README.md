@@ -60,7 +60,7 @@ python test_model.py
 You can get the Dice and IoU scores and the visualization results. 
 
 
-## Reference
+## 4. Reference
 
 
 * [TransUNet](https://github.com/Beckschen/TransUNet) 
@@ -68,7 +68,7 @@ You can get the Dice and IoU scores and the visualization results.
 
 
 
-## Citations
+## 5. Citations
 
 
 If this code is helpful for your study, please cite:
@@ -82,5 +82,5 @@ If this code is helpful for your study, please cite:
 ```
 
 
-## Contact 
+## 6. Contact 
 If you have any issues, please raise an issue or contact at ([mustansar.fiaz@mbzuai.ac.ae](mustansar.fiaz@mbzuai.ac.ae))
