@@ -2,7 +2,7 @@
 
 Highlights
 -----------------
-- ** Microscopic image segmentation network:** The development of SA2-Net, a microscopic image segmentation network comprising an encoder and a decoder.
+- **Microscopic image segmentation network:** The development of SA2-Net, a microscopic image segmentation network comprising an encoder and a decoder.
 change detection (CD).
 - **scale-aware attention (SA2) module:** The incorporation of the scale-aware attention (SA2) module within the decoder. This module effectively captures scale and shape variations by applying local scale attention at each stage and global scale attention across scales using multi-resolution features.
 - **Adaptive up-attention (AuA) module:** The implementation of progressive refinement and upsampling of scale-enhanced features through the adaptive up-attention (AuA) module, leading to the generation of the final segmentation mask.
