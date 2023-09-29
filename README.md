@@ -9,7 +9,7 @@ change detection (CD).
 
 Methods
 -----------------
-<img width="1096" alt="image" src="https://github.com/mustansarfiaz/ScratchFormer/blob/main/demo/proposed_framework.jpg">
+<img width="1096" alt="image" src="https://github.com/mustansarfiaz/SA2-Net/blob/main/SA2-Net.jpg">
 
 Introduction
 -----------------
