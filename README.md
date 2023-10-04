@@ -1,5 +1,8 @@
 # SA2-Net: Scale-aware Attention Network for Microscopic Image Segmentation (BMVC'23 -- Oral)
 
+## News
+- Aug 25, 2023: Accepted for an oral presentation in BMVC 2023! 🥳
+
 Highlights
 -----------------
 - **Microscopic image segmentation network:** The development of SA2-Net, a microscopic image segmentation network comprising an encoder and a decoder.
