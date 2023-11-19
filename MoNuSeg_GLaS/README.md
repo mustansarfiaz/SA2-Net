@@ -77,7 +77,7 @@ If this code is helpful for your study, please cite:
 ```
 @inproceedings{fiaz2022sat,
   title={SA2-Net: Scale-aware Attention Network for Medical Image Segmentation},
-  author={Fiaz, Mustansar and Anwar, Rao Muhammad and Cholakkal, Hisham},
+  author={Fiaz, Mustansar and Heidari, Moein and Anwar, Rao Muhammad and Cholakkal, Hisham},
   booktitle={BMVC},
   year={2023}
 }
