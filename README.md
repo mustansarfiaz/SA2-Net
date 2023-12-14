@@ -33,6 +33,7 @@ For MoNuSeg and GlaS, we follow [UCTransNet](https://github.com/McGregorWwww/UCT
 For ISIC2018 and SegPC2021, we follow [Awesome-U-Net](https://github.com/NITR098/Awesome-U-Net).
 For ACDC, we follow [CASCADE](https://github.com/SLDGroup/CASCADE/tree/main).
 
+* **SA2-Net**: "SA2-Net: Scale-aware Attention Network for Medical Image Segmentation", BMVC--Oral, 2023 (*MBZUAI*). [[Paper](https://arxiv.org/abs/2309.16661)][[PyTorch](https://github.com/mustansarfiaz/SA2-Net)]
 
 
 
